@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 
+import model.system.Employee;
 import view.PanelQLNV;
 
 public class ControlPanelQLNV implements ActionListener {
@@ -21,7 +22,6 @@ public class ControlPanelQLNV implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		JButton button = (JButton) e.getSource();
-
 		if(panelQLNV.getButtonEyes().equals(button)) {
 			panelQLNV.actionButtonEye(button);
 		}
@@ -29,14 +29,20 @@ public class ControlPanelQLNV implements ActionListener {
 		if(panelQLNV.getButtonDangNhap().equals(button)) {
 			panelQLNV.dangNhap();
 		}
-		
-//		if(panelQLNV.getButtonEyes().equals(button)) {
-//			panelQLNV.actionButtonEye(button);
-//		}
-//		
-//		if(panelQLNV.getButtonEyes().equals(button)) {
-//			panelQLNV.actionButtonEye(button);
-//		}
-	}
 
+		if(this.panelQLNV.getButtonLuu().equals(button)) {
+			if(!panelQLNV.isCoLenh()) { 
+				panelQLNV.themNhanVien();
+			
+			}
+			else { 
+				panelQLNV.editEmployee();
+				
+			}
+				
+		}
+		
+
+		
+	}
 }

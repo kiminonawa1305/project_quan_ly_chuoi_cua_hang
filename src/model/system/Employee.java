@@ -54,4 +54,61 @@ public class Employee {
 	public double getBaseSalary() {
 		return baseSalary;
 	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	/**
+	 * @param name the name to set
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	/**
+	 * @param numberPhone the numberPhone to set
+	 */
+	public void setNumberPhone(String numberPhone) {
+		this.numberPhone = numberPhone;
+	}
+
+	/**
+	 * @param address the address to set
+	 */
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	/**
+	 * @param sex the sex to set
+	 */
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
+
+	/**
+	 * @param birthDate the birthDate to set
+	 */
+	public void setBirthDate(Date birthDate) {
+		this.birthDate = birthDate;
+	}
+
+	/**
+	 * @param dateStart the dateStart to set
+	 */
+	public void setDateStart(Date dateStart) {
+		this.dateStart = dateStart;
+	}
+
+	/**
+	 * @param baseSalary the baseSalary to set
+	 */
+	public void setBaseSalary(double baseSalary) {
+		this.baseSalary = baseSalary;
+	}
+	
 }

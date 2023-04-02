@@ -245,7 +245,7 @@ public class DesignViewOutlets extends JFrame {
 			listToppingFood.add(new OtherToppingFood("Topping đồ ăn " + i, i * 5000));
 		}
 
-		Outlets outlets = new Outlets("a", "a", "abc", "lamnguyen1305");
+		Outlets outlets = new Outlets("a", "a", "abc", "1");
 		outlets.setListBeverage(listBeverages);
 		outlets.setListFood(listFoods);
 		outlets.setEmployees(emplyees);
