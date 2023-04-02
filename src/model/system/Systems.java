@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.TreeMap;
 
 import model.beverage.*;
 import model.food.*;
@@ -57,15 +58,33 @@ public class Systems extends Observable implements Observer {
 	 * 
 	 * @param id
 	 */
-	public String getTurnoverOfOutlets(String id) {
-		this.getTotalTurnover();
+	public String getTurnoverOfOutlets(String id, int month, int year) {
+		this.getTotalTurnoverByMonth(month, year);
 
 		return "Thu nhap " + id + " " + listTurnover.get("Thu nhap " + id);
 	}
 
-	public void getTotalTurnover() {
+	public void getTotalTurnoverByMonth(int month, int year) {
 		notify = new Object[1];
 		notify[0] = "Thu nhap";
+		notify[1] = "thang";
+		notify[2] = month + "/" + year;
+
+		this.setChanged();
+		this.notifyObservers(notify);
+	}
+	
+	public String getTurnoverOfOutlets(String id, int year) {
+		this.getTotalTurnoverByYear(year);
+
+		return "Thu nhap " + id + " " + listTurnover.get("Thu nhap " + id);
+	}
+
+	public void getTotalTurnoverByYear(int year) {
+		notify = new Object[1];
+		notify[0] = "Thu nhap";
+		notify[1] = "nam";
+		notify[2] = year;
 
 		this.setChanged();
 		this.notifyObservers(notify);
@@ -129,7 +148,7 @@ public class Systems extends Observable implements Observer {
 		outlets.deleteObserver(this);
 		outlets.setListBeverage(new ArrayList<>());
 		outlets.setListFood(new ArrayList<>());
-		outlets.setListBill(new ArrayList<>());
+		outlets.setListBill(new TreeMap<>());
 		outlets.setListToppingBeverage(new ArrayList<>());
 		outlets.setListToppingFood(new ArrayList<>());
 	}

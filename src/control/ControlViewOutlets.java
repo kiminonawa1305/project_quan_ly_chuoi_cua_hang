@@ -23,7 +23,7 @@ public class ControlViewOutlets implements ActionListener {
 		}
 		
 		if (button.equals(viewOutlets.getButtonHoaDon())) {
-			viewOutlets.upDateHoaDon();
+			viewOutlets.updateHoaDon();
 			viewOutlets.showHoaDon();
 		}
 		
@@ -33,6 +33,7 @@ public class ControlViewOutlets implements ActionListener {
 		
 		if (button.equals(viewOutlets.getButtonDoanhThu())) {
 			viewOutlets.showDoanhThu();
+			viewOutlets.updateDoanThu();
 		}
 	}
 

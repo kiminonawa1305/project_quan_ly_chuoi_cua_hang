@@ -1,13 +1,17 @@
 package model.pay;
 
+import javax.swing.JOptionPane;
+
 import model.system.Bill;
 
 public class Card implements PayOption {
 
 	@Override
-	public boolean getPay(Bill bill,double thue, double moneyReceived) {
-		System.out.println("Bạn đã thanh toán bằng thể");
-		return bill.getPay(thue) <= moneyReceived;
+	public boolean getPay(Bill bill,double thue) {
+		JOptionPane.showMessageDialog(null,
+				"Đã thanh toán thành công bằng hình thức quẹt thẻ",
+				"Thành công", JOptionPane.INFORMATION_MESSAGE);
+		return true;
 	}
 
 }

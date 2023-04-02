@@ -34,6 +34,11 @@ import model.system.Bill;
 import model.system.Date;
 import model.system.Employee;
 import model.system.Outlets;
+import javax.swing.JLabel;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
+import javax.swing.SwingConstants;
 
 public class DesignViewOutlets extends JFrame {
 	private Outlets outlets;
@@ -44,6 +49,8 @@ public class DesignViewOutlets extends JFrame {
 	private JButton buttonQLNV, buttonHoaDon, buttonDoanhThu, buttonMenu;
 	private ControlViewOutlets control;
 	private PanelHoaDon panelHoaDon;
+	private PanelDoanhThu panelDoanhThu;
+	
 
 	/**
 	 * Create the frame.
@@ -80,7 +87,8 @@ public class DesignViewOutlets extends JFrame {
 	 */
 	public void init() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(0, 0, 1470, 800);
+		this.setSize(1470, 800);
+		this.setLocationRelativeTo(null);
 		contentPane = new JPanel(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 		this.setResizable(false);
@@ -153,21 +161,19 @@ public class DesignViewOutlets extends JFrame {
 		contentPane.add(panelCenter, BorderLayout.CENTER);
 
 		// Menu sản phẩm
-		panelMenuSanPham = new PanelMenuSanPham(outlets.getListFood(), outlets.getListBeverage(),
-				outlets.getListToppingFood(), outlets.getListToppingBeverage());
+		panelMenuSanPham = new PanelMenuSanPham(outlets);
 		panelCenter.add("menu_sp", panelMenuSanPham);
 
 		// Hóa đơn
-		panelHoaDon = new PanelHoaDon(panelMenuSanPham.getBill());
+		panelHoaDon = new PanelHoaDon(panelMenuSanPham, outlets);
 		panelCenter.add("hoa_don", panelHoaDon);
 
 		// Doanh thu
-		JPanel panelDoanhThu = new JPanel();
+		panelDoanhThu = new PanelDoanhThu(outlets);
 		panelCenter.add("doanh_thu", panelDoanhThu);
-
+		
+		//Quan ly nhan vien
 		panelQLNV = new PanelQLNV(outlets.getEmployees(), outlets.getPass());
-		panelQLNV.setBackground(new Color(228, 239, 231));
-		this.setPreferredSize(new Dimension(1540, 930));
 		panelCenter.add("qlnv", panelQLNV);
 	}
 
@@ -212,10 +218,14 @@ public class DesignViewOutlets extends JFrame {
 		}
 	}
 
-	public void upDateHoaDon() {
+	public void updateHoaDon() {
 		panelHoaDon.upDateListSPDM();
 	}
-
+	
+	public void updateDoanThu() {
+		panelDoanhThu.update();
+	}
+	
 	/**
 	 * Launch the application.
 	 */
@@ -245,12 +255,20 @@ public class DesignViewOutlets extends JFrame {
 			listToppingFood.add(new OtherToppingFood("Topping đồ ăn " + i, i * 5000));
 		}
 
-		Outlets outlets = new Outlets("a", "a", "abc", "lamnguyen1305");
+		Outlets outlets = new Outlets("a", "a", "abc", "1");
 		outlets.setListBeverage(listBeverages);
 		outlets.setListFood(listFoods);
 		outlets.setEmployees(emplyees);
 		outlets.setListToppingFood(listToppingFood);
 		outlets.setListToppingBeverage(listToppingBeverage);
+		
+		Outlets outlets2 = new Outlets("b", "b", "abcd", "2");
+		outlets2.setListBeverage(listBeverages);
+		outlets2.setListFood(listFoods);
+		outlets2.setEmployees(emplyees);
+		outlets2.setListToppingFood(listToppingFood);
+		outlets2.setListToppingBeverage(listToppingBeverage);
+		
 		DesignViewOutlets frame = new DesignViewOutlets(outlets);
 	}
 }

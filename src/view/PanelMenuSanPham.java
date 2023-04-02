@@ -36,6 +36,7 @@ import model.food.OtherFood;
 import model.food.OtherToppingFood;
 import model.system.Bill;
 import model.system.NumericInputOnlyDocument;
+import model.system.Outlets;
 import model.system.Size;
 
 public class PanelMenuSanPham extends JPanel {
@@ -58,15 +59,15 @@ public class PanelMenuSanPham extends JPanel {
 	private JSpinner soLuong;
 	private Bill bill;
 
-	public PanelMenuSanPham(List<Food> listFoods, List<Beverage> listBeverages, List<FoodDecorator> listToppingFood,
-			List<BeverageDecorator> listToppingBeverage) {
-		this.listFoods = listFoods;
-		this.listBeverages = listBeverages;
-		this.listToppingBeverage = listToppingBeverage;
-		this.listToppingFood = listToppingFood;
+	public PanelMenuSanPham(Outlets outlets) {
+		this.listFoods = outlets.getListFood();
+		this.listBeverages = outlets.getListBeverage();
+		this.listToppingBeverage = outlets.getListToppingBeverage();
+		this.listToppingFood = outlets.getListToppingFood();
 		this.init();
 		this.event();
 	}
+
 
 	public JButton getButtonOptionDoAn() {
 		return buttonOptionDoAn;
@@ -252,7 +253,7 @@ public class PanelMenuSanPham extends JPanel {
 
 	public void createPanelListBeverage(List<Beverage> listBeverages) {
 		JPanel panelCenterDoUong = new JPanel(new FlowLayout(FlowLayout.LEFT, 39, 30));
-		panelCenterDoUong.setPreferredSize(new Dimension(750, (listBeverages.size() / 6 + 1) * 200));
+		panelCenterDoUong.setPreferredSize(new Dimension(750, (listBeverages.size() / 6 + 1) * 280));
 		panelCenterDoUong.setBackground(new Color(228, 239, 231));
 		for (Beverage b : listBeverages) {
 			PanelDoUong beverage = new PanelDoUong(b);
@@ -346,7 +347,6 @@ public class PanelMenuSanPham extends JPanel {
 
 		bill.addFood(f, (int) this.soLuong.getValue());
 		beverageOrder = null;
-		System.out.println(bill);
 	}
 
 	// Chọn đồ uống cơ bản
@@ -401,7 +401,6 @@ public class PanelMenuSanPham extends JPanel {
 		}
 
 		bill.addBeverage(b, (int) this.soLuong.getValue());
-		System.out.println(bill);
 		beverageOrder = null;
 	}
 

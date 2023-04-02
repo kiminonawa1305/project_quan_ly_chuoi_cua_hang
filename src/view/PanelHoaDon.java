@@ -10,6 +10,7 @@ import java.util.concurrent.Flow;
 
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
+import javax.swing.ButtonModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -35,7 +36,9 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 
 public class PanelHoaDon extends JPanel {
+	private final PanelMenuSanPham panelMenuSanPham;
 	private Bill bill;
+	private final Outlets outlets;
 	private JPanel panelFrameListSP;
 	private JRadioButton optionTM, optionCK, optionQT;
 	private JScrollPane scrollPane;
@@ -45,21 +48,15 @@ public class PanelHoaDon extends JPanel {
 	private JButton buttonThanhToan;
 	private JTable table;
 
-	public Bill getBill() {
-		return bill;
-	}
-
-	public void setBill(Bill bill) {
-		this.bill = bill;
-	}
-
 	/**
 	 * Create the panel.
 	 * 
-	 * @param bill
+	 * @param panelMenuSanPham.getBill()
 	 */
-	public PanelHoaDon(Bill bill) {
-		this.bill = bill;
+	public PanelHoaDon(PanelMenuSanPham panelMenuSanPham, Outlets outlets) {
+		this.outlets = outlets;
+		this.panelMenuSanPham = panelMenuSanPham;
+		this.bill = panelMenuSanPham.getBill();
 		this.init();
 		this.upDateListSPDM();
 		this.event();
@@ -137,6 +134,7 @@ public class PanelHoaDon extends JPanel {
 
 		optionTM = new JRadioButton("Tiền mặt");
 		optionTM.setActionCommand("tien_mat");
+		optionTM.setSelected(true);
 		optionTM.setPreferredSize(new Dimension(140, 25));
 		optionTM.setOpaque(false);
 		panelOptionTT.add(optionTM);
@@ -155,7 +153,7 @@ public class PanelHoaDon extends JPanel {
 		optionQT.setOpaque(false);
 		panelOptionTT.add(optionQT);
 		groupOptionTT.add(optionQT);
-
+		
 		JPanel panelButtonThanhToan = new JPanel();
 		FlowLayout flowLayout = (FlowLayout) panelButtonThanhToan.getLayout();
 		flowLayout.setAlignment(FlowLayout.LEFT);
@@ -181,12 +179,12 @@ public class PanelHoaDon extends JPanel {
 		labelTongTien.setPreferredSize(new Dimension(200, 25));
 		panelTien.add(labelTongTien);
 
-		labelPhanTramThue = new JLabel("Thuế : 0.05%");
+		labelPhanTramThue = new JLabel("Thuế : 0.005%");
 		labelPhanTramThue.setFont(new Font("Times New Roman", Font.PLAIN, 17));
 		labelPhanTramThue.setPreferredSize(new Dimension(200, 25));
 		panelTien.add(labelPhanTramThue);
 
-		labelTienThue = new JLabel("Tiền thuế: " + bill.getTotalBill() * 0.05);
+		labelTienThue = new JLabel("Tiền thuế: " + bill.getTotalBill() * 0.005);
 		labelTienThue.setFont(new Font("Times New Roman", Font.PLAIN, 17));
 		labelTienThue.setPreferredSize(new Dimension(200, 25));
 		panelTien.add(labelTienThue);
@@ -195,7 +193,7 @@ public class PanelHoaDon extends JPanel {
 		separator.setPreferredSize(new Dimension(160, 5));
 		panelTien.add(separator);
 
-		labelThanhTienTT = new JLabel("Thành tiền: " + (bill.getTotalBill() + bill.getTotalBill() * 0.05));
+		labelThanhTienTT = new JLabel("Thành tiền: " + (bill.getTotalBill() + bill.getTotalBill() * 0.005));
 		labelThanhTienTT.setFont(new Font("Times New Roman", Font.PLAIN, 17));
 		labelThanhTienTT.setPreferredSize(new Dimension(200, 25));
 		panelTien.add(labelThanhTienTT);
@@ -312,44 +310,52 @@ public class PanelHoaDon extends JPanel {
 	public void upDateListSPDM() {
 		this.scrollPane.setViewportView(createListSPDM());
 		this.labelTongTien.setText("Tổng tiền: " + bill.getTotalBill());
-		this.labelTienThue.setText("Tiền thuế: " + bill.getTotalBill() * 0.05);
-		this.labelThanhTienTT.setText("Thành tiền: " + (bill.getTotalBill() + bill.getTotalBill() * 0.05));
+		this.labelTienThue.setText("Tiền thuế: " + bill.getTotalBill() * 0.005);
+		this.labelThanhTienTT.setText("Thành tiền: " + (bill.getTotalBill() + bill.getTotalBill() * 0.005));
 	}
 
 	public void thanhToan() {
-		try {
-			if (groupOptionTT.getSelection() == null) {
-				JOptionPane.showMessageDialog(null, "Chưa chọn phương thức thanh toán", "Lỗi",
-						JOptionPane.ERROR_MESSAGE);
-			} else {
-				JTextField textField = new JTextField(new NumericInputOnlyDocument(), null, 0);
-				int result = JOptionPane.showConfirmDialog(null, textField, "Nhập số tiền thanh toán:",
-						JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-				String key = groupOptionTT.getSelection().getActionCommand();
-				boolean check = false;
-				switch (key) {
-				case "tien_mat": {
-					check = Outlets.pay(new Cash(), bill, 0.05, Double.parseDouble(textField.getText()));
-					break;
-				}
-				case "chuyen_khoan": {
-					check =  Outlets.pay(new Card(), bill, 0.05, Double.parseDouble(textField.getText()));
-					break;
-				}
-				case "quet_the": {
-					check =  Outlets.pay(new Transfer(), bill, 0.05, Double.parseDouble(textField.getText()));
-					break;
-				}
-				}
-				
-				if(check) {
-					bill = new Bill();
-				}else {
-					JOptionPane.showMessageDialog(this, "Lỗi thanh toán", "Lỗi", JOptionPane.ERROR_MESSAGE);
-				}
+		if (groupOptionTT.getSelection() == null) {
+			JOptionPane.showMessageDialog(null, "Chưa chọn phương thức thanh toán", "Lỗi", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+
+		String key = groupOptionTT.getSelection().getActionCommand();
+		boolean check = false;
+
+		switch (key) {
+		case "tien_mat": {
+			JTextField textField = new JTextField(new NumericInputOnlyDocument(), null, 0);
+			int result = JOptionPane.showConfirmDialog(null, textField, "Nhập số tiền thanh toán:",
+					JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+			if (result == JOptionPane.CANCEL_OPTION) {
+				return;
 			}
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(this, "Lỗi thanh toán", "Lỗi", JOptionPane.ERROR_MESSAGE);
+
+			try {
+				check = outlets.pay(new Cash(Double.parseDouble(textField.getText())), bill);
+			} catch (Exception e) {
+			}
+
+			break;
+		}
+		case "chuyen_khoan": {
+			check = outlets.pay(new Transfer(), bill);
+			break;
+		}
+		case "quet_the": {
+			check = outlets.pay(new Card(), bill);
+			break;
+		}
+		}
+
+		if (check) {
+			bill = new Bill();
+			panelMenuSanPham.setBill(bill);
+			labelTTHD.setText("<html>Thông tin hóa đơn<br> Mã hóa đơn: " + bill.getId() + "</html>");
+			System.out.println("Doanh thu hien tai la: " + outlets.getTotalTurnoverByMonth(4, 2023));
+			upDateListSPDM();
 		}
 	}
 }
