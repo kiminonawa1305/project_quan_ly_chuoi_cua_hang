@@ -1,9 +1,10 @@
-package view;
+package view.outlet;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Image;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -24,6 +25,22 @@ public class PanelDoUong extends JPanel {
 	public PanelDoUong(Beverage beverage) {
 		this.beverage = beverage;
 		this.init();
+	}
+	
+	public ImageIcon scaledIcon(JLabel label, String url) {
+		// Tạo đối tượng ImageIcon với đường dẫn đến file ảnh
+		ImageIcon icon = new ImageIcon(url);
+
+		// Lấy đối tượng hình ảnh từ ImageIcon
+		Image img = icon.getImage();
+
+		// Thay đổi kích thước của hình ảnh theo kích thước của JLabel
+		Image scaledImg = img.getScaledInstance(label.getPreferredSize().width, label.getPreferredSize().height, Image.SCALE_SMOOTH);
+
+		// Tạo đối tượng ImageIcon mới với hình ảnh đã được thay đổi kích thước
+		ImageIcon scaledIcon = new ImageIcon(scaledImg);
+
+		return scaledIcon;
 	}
 
 	public void init() {
@@ -46,8 +63,7 @@ public class PanelDoUong extends JPanel {
 		labelTen.setBackground(Color.decode("#064420"));
 		panelInfCafe.add(labelTen);
 
-		JLabel labelGia = null;
-		labelGia = new JLabel("Giá: " + beverage.cost() * Size.SMALL.getPercent() + " / "
+		JLabel labelGia = new JLabel("Giá: " + beverage.cost() * Size.SMALL.getPercent() + " / "
 				+ beverage.cost() * Size.MEDIUM.getPercent() + " / " + beverage.cost() * Size.LARGE.getPercent());
 		labelGia.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
 		labelGia.setPreferredSize(new Dimension(200, 25));
@@ -58,7 +74,8 @@ public class PanelDoUong extends JPanel {
 
 		JLabel image = new JLabel();
 		image.setPreferredSize(new Dimension(150, 155));
-		image.setIcon(new ImageIcon(((Beverages) beverage).getUrlImage()));
+		image.setIcon(scaledIcon(image, ((Beverages) beverage).getUrlImage()));
+		image.setHorizontalAlignment(JLabel.CENTER);
 		this.add(image, BorderLayout.NORTH);
 
 		chon = new JButton("Chọn");

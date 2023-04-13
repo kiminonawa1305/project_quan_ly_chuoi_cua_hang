@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JRadioButton;
 
-import view.PanelHoaDon;
+import view.outlet.PanelHoaDon;
 
 public class ControlPanelHoaDon implements ActionListener {
 	private PanelHoaDon panelHoaDon;

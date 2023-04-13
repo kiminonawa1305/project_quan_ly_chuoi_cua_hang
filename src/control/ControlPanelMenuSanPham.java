@@ -5,7 +5,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 
-import view.PanelMenuSanPham;
+import view.outlet.PanelMenuSanPham;
 
 public class ControlPanelMenuSanPham implements ActionListener {
 	private PanelMenuSanPham panelMenu;

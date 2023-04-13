@@ -2,49 +2,77 @@ package model.food;
 
 import java.util.Objects;
 
-import model.beverage.Beverages;
 import model.system.Size;
 
-public abstract class Foods implements Food {
-	protected String urlImage, name;
-	protected Size size = Size.MEDIUM;
-	protected double cost;
+public class Foods implements Food  {
+	private String urlImage, name;
+	private Size size = Size.MEDIUM;
+	private double cost;
+	private boolean hasSize = false;
 
-
-	public abstract boolean hasSize();
+	public Foods(String url, String name, double cost, boolean hasSize) {
+		super();
+		this.urlImage = url;
+		this.name = name;
+		this.cost = cost;
+		this.hasSize = hasSize;
+	}
+	
+	public Foods(String url, String name, double cost) {
+		super();
+		this.urlImage = url;
+		this.name = name;
+		this.cost = cost;
+	}
+	
+	
 
 	public String getUrlImage() {
 		return urlImage;
-	}
-
-	public void setUrlImage(String urlImage) {
-		this.urlImage = urlImage;
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	@Override
+	public double cost() {
+		return cost * size.getPercent();
+	}
+
+	public boolean hasSize() {
+		return hasSize;
+	}
+
+	public String note() {
+		return name + " size " + size;
 	}
 
 	public Size getSize() {
-		return size;
+		if(hasSize) {
+			return size;
+		}else {
+			return null;
+		}
 	}
 
 	public void setSize(Size size) {
-		this.size = size;
+		if(hasSize) {
+			this.size = size;
+		}
+	}
+	
+	public void setHasSize(boolean hasSize) {
+		this.hasSize = hasSize;
 	}
 
-	public double getCost() {
-		return cost;
+	@Override
+	public Food clone() {
+		Foods re = new Foods(this.urlImage, this.name, this.cost);
+		re.setHasSize(hasSize);
+		return re;
 	}
-
-	public void setCost(double cost) {
-		this.cost = cost;
-	}
-
+	
 	@Override
 	public boolean equals(Object obj) {
 		if(obj == null || this.getClass() != obj.getClass()) {
@@ -64,6 +92,5 @@ public abstract class Foods implements Food {
 	public String toString() {
 		return this.note();
 	}
-	
-	public abstract Food clone();
+
 }

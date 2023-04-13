@@ -1,9 +1,10 @@
-package view;
+package view.outlet;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Image;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -22,6 +23,22 @@ public class PanelDoAn extends JPanel {
 	public PanelDoAn(Food food) {
 		this.food = food;
 		this.init();
+	}
+	
+	public ImageIcon scaledIcon(JLabel label, String url) {
+		// Tạo đối tượng ImageIcon với đường dẫn đến file ảnh
+		ImageIcon icon = new ImageIcon(url);
+
+		// Lấy đối tượng hình ảnh từ ImageIcon
+		Image img = icon.getImage();
+
+		// Thay đổi kích thước của hình ảnh theo kích thước của JLabel
+		Image scaledImg = img.getScaledInstance(label.getPreferredSize().width, label.getPreferredSize().height, Image.SCALE_SMOOTH);
+
+		// Tạo đối tượng ImageIcon mới với hình ảnh đã được thay đổi kích thước
+		ImageIcon scaledIcon = new ImageIcon(scaledImg);
+
+		return scaledIcon;
 	}
 
 	public void init() {
@@ -60,7 +77,8 @@ public class PanelDoAn extends JPanel {
 
 		JLabel image = new JLabel();
 		image.setPreferredSize(new Dimension(150, 155));
-		image.setIcon(new ImageIcon(((Foods) food).getUrlImage()));
+		image.setIcon(scaledIcon(image, ((Foods) food).getUrlImage()));
+		image.setHorizontalAlignment(JLabel.CENTER);
 		this.add(image, BorderLayout.NORTH);
 
 		chon = new JButton("Chọn");

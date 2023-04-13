@@ -1,9 +1,8 @@
-package view;
+package view.outlet;
 
 import javax.swing.JPanel;
 import java.awt.CardLayout;
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 
@@ -12,26 +11,29 @@ import javax.swing.JOptionPane;
 
 import java.awt.BorderLayout;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 
+import control.CareControlQLNV;
 import control.ControlPanelQLNV;
 import model.system.Date;
 import model.system.Employee;
+import model.system.NumericInputOnlyDocument;
+import model.system.Sex;
 
 import java.awt.Font;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.time.LocalDate;
 
 import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
-import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -39,11 +41,10 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.SpringLayout;
-import javax.swing.DefaultComboBoxModel;
 
 public class PanelQLNV extends JPanel {
 	private ControlPanelQLNV control;
+	private CareControlQLNV careControlQLNV;
 	private JTextField passwordField;
 	private JButton buttonEye, buttonDangNhap;
 	private JPanel panelPasswordField, panelShowListNV;
@@ -52,19 +53,15 @@ public class PanelQLNV extends JPanel {
 	private JButton buttonLuu, buttonSearch;
 	private Font fontLabel = new Font("Times New Roman", Font.BOLD, 20),
 			fontInf = new Font("Times New Roman", Font.PLAIN, 15);
-	private JComboBox<String> comboBoxGioiTinh;
+	private JComboBox<Sex> comboBoxGioiTinh;
 	private List<Employee> listEmployees;
 	private String pass;
 	private JScrollPane scrollPane;
-	private final Icon OPEN = new ImageIcon(
-			"icon\\open_eye_icon.png");
-	private final Icon CLOSE = new ImageIcon(
-			"icon\\eye_close_icon.png");
-	private final Icon EDIT = new ImageIcon(
-			"icon\\editIcon.png");
-	private final Icon DELETE = new ImageIcon(
-			"icon\\remove_02.png");
-	
+	private final Icon OPEN = new ImageIcon("icon\\open_eye_icon.png");
+	private final Icon CLOSE = new ImageIcon("icon\\eye_close_icon.png");
+	private final Icon EDIT = new ImageIcon("icon\\editIcon.png");
+	private final Icon DELETE = new ImageIcon("icon\\remove_02.png");
+	private Employee nvDangDuocSuaTT = null;
 
 	/**
 	 * Create the panel.
@@ -97,6 +94,7 @@ public class PanelQLNV extends JPanel {
 		this.setBackground(new Color(228, 239, 231));
 
 		control = new ControlPanelQLNV(this);
+		careControlQLNV = new CareControlQLNV(this);
 
 		JPanel panelPassword = new JPanel();
 		panelPassword.setAlignmentX(140.0f);
@@ -163,18 +161,21 @@ public class PanelQLNV extends JPanel {
 		panelSearch.add(panelTextFieldSearch);
 
 		textFieldSearchID = new JTextField();
+		textFieldSearchID.setName("id");
 		textFieldSearchID.setBorder(new TitledBorder("ID nhân viên"));
 		textFieldSearchID.setPreferredSize(new Dimension(7, 40));
 		textFieldSearchID.setColumns(20);
 		panelTextFieldSearch.add(textFieldSearchID);
 
 		textFieldSearchName = new JTextField();
+		textFieldSearchName.setName("name");
 		textFieldSearchName.setBorder(new TitledBorder("Họ tên"));
 		textFieldSearchName.setPreferredSize(new Dimension(7, 40));
 		panelTextFieldSearch.add(textFieldSearchName);
 		textFieldSearchName.setColumns(20);
 
 		textFieldSearchSDT = new JTextField();
+		textFieldSearchSDT.setName("sdt");
 		textFieldSearchSDT.setBorder(new TitledBorder("Số điện thoại"));
 		textFieldSearchSDT.setPreferredSize(new Dimension(7, 40));
 		textFieldSearchSDT.setColumns(20);
@@ -299,13 +300,16 @@ public class PanelQLNV extends JPanel {
 		panelLayThongTin.add(textFieldHoTen);
 
 		textFieldNgaySinh = new JTextField(18);
+		textFieldNgaySinh.setToolTipText("dd/mm/yyyy");
 		textFieldNgaySinh.setPreferredSize(new Dimension(208, 45));
 		textFieldNgaySinh.setFont(new Font("Times New Roman", Font.PLAIN, 16));
 		textFieldNgaySinh.setBorder(new TitledBorder("Ngày sinh"));
 		panelLayThongTin.add(textFieldNgaySinh);
 
-		comboBoxGioiTinh = new JComboBox<>();
-		comboBoxGioiTinh.setModel(new DefaultComboBoxModel(new String[] {"Nam", "Nữ", "Khác"}));
+		comboBoxGioiTinh = new JComboBox<Sex>();
+		comboBoxGioiTinh.addItem(Sex.NAM);
+		comboBoxGioiTinh.addItem(Sex.NU);
+		comboBoxGioiTinh.addItem(Sex.KHAC);
 		comboBoxGioiTinh.setBorder(new TitledBorder("Giới tính"));
 		comboBoxGioiTinh.setPreferredSize(new Dimension(208, 45));
 		panelLayThongTin.add(comboBoxGioiTinh);
@@ -316,19 +320,20 @@ public class PanelQLNV extends JPanel {
 		textFieldDiaChi.setBorder(new TitledBorder("Địa chỉ"));
 		panelLayThongTin.add(textFieldDiaChi);
 
-		textFieldSDT = new JTextField(18);
+		textFieldSDT = new JTextField(new NumericInputOnlyDocument(), null, 18);
 		textFieldSDT.setPreferredSize(new Dimension(208, 45));
 		textFieldSDT.setFont(new Font("Times New Roman", Font.PLAIN, 16));
 		textFieldSDT.setBorder(new TitledBorder("Số điện thoại"));
 		panelLayThongTin.add(textFieldSDT);
 
-		textFieldLuongCoBan = new JTextField(18);
+		textFieldLuongCoBan = new JTextField(new NumericInputOnlyDocument(), null, 18);
 		textFieldLuongCoBan.setPreferredSize(new Dimension(208, 45));
 		textFieldLuongCoBan.setFont(new Font("Times New Roman", Font.PLAIN, 16));
 		textFieldLuongCoBan.setBorder(new TitledBorder("Lương cơ bản"));
 		panelLayThongTin.add(textFieldLuongCoBan);
 
 		textFieldNgayBD = new JTextField(18);
+		textFieldNgayBD.setToolTipText("dd/mm/yyyy");
 		textFieldNgayBD.setPreferredSize(new Dimension(208, 45));
 		textFieldNgayBD.setFont(new Font("Times New Roman", Font.PLAIN, 16));
 		textFieldNgayBD.setBorder(new TitledBorder("Ngày bắt đầu"));
@@ -349,6 +354,7 @@ public class PanelQLNV extends JPanel {
 
 	public void event() {
 		this.buttonEye.addActionListener(control);
+		this.buttonDangNhap.addActionListener(control);
 		passwordField.registerKeyboardAction(new ActionListener() {
 
 			@Override
@@ -359,6 +365,9 @@ public class PanelQLNV extends JPanel {
 		}, KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), JComponent.WHEN_FOCUSED);
 		this.buttonSearch.addActionListener(control);
 		this.buttonLuu.addActionListener(control);
+		textFieldSearchID.addCaretListener(careControlQLNV);
+		textFieldSearchName.addCaretListener(careControlQLNV);
+		textFieldSearchSDT.addCaretListener(careControlQLNV);
 	}
 
 	public void actionButtonEye(JButton button) {
@@ -430,13 +439,18 @@ public class PanelQLNV extends JPanel {
 			lb2.setPreferredSize(new Dimension(150, 48));
 			panel.add(lb2);
 
-			JLabel lb3 = new JLabel(employee.getBirthDate().toString());
+			JLabel lb3 = new JLabel();
+			if (employee.getBirthDate() == null) {
+				lb3.setText(null);
+			} else {
+				lb3.setText(employee.getBirthDate().toString());
+			}
 			lb3.setHorizontalAlignment(SwingConstants.CENTER);
 			lb3.setFont(fontInf);
 			lb3.setPreferredSize(new Dimension(100, 48));
 			panel.add(lb3);
 
-			JLabel lb4 = new JLabel(employee.getSex());
+			JLabel lb4 = new JLabel(employee.getSex().toString());
 			lb4.setHorizontalAlignment(SwingConstants.CENTER);
 			lb4.setFont(fontInf);
 			lb4.setPreferredSize(new Dimension(100, 48));
@@ -474,51 +488,246 @@ public class PanelQLNV extends JPanel {
 			panel.add(panelTuyChinh);
 
 			JButton buttonSua = new JButton(EDIT);
+			buttonSua.addActionListener(control);
 			buttonSua.setActionCommand("sua	" + employee.getId());
 			buttonSua.setPreferredSize(new Dimension(45, 45));
 			panelTuyChinh.add(buttonSua);
 
 			JButton buttonXoa = new JButton(DELETE);
+			buttonXoa.addActionListener(control);
 			buttonXoa.setActionCommand("xoa	" + employee.getId());
 			buttonXoa.setPreferredSize(new Dimension(45, 45));
 			panelTuyChinh.add(buttonXoa);
 		}
 	}
 
-	//Xóa nhân viên
+	public void createSearchList(List<Employee> employees) {
+		panelShowListNV = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 10));
+		panelShowListNV.setPreferredSize(new Dimension(1170, employees.size() * 60));
+		for (Employee employee : employees) {
+			JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+			panel.setBackground(new Color(250, 241, 230));
+			panel.setPreferredSize(new Dimension(1180, 50));
+			panelShowListNV.add(panel);
+
+			JLabel lb1 = new JLabel(employee.getId());
+			lb1.setHorizontalAlignment(SwingConstants.CENTER);
+			lb1.setFont(fontInf);
+			lb1.setPreferredSize(new Dimension(100, 48));
+			panel.add(lb1);
+
+			JLabel lb2 = new JLabel(employee.getName());
+			lb2.setHorizontalAlignment(SwingConstants.CENTER);
+			lb2.setFont(fontInf);
+			lb2.setPreferredSize(new Dimension(150, 48));
+			panel.add(lb2);
+
+			JLabel lb3 = new JLabel();
+			if (employee.getBirthDate() == null) {
+				lb3.setText(null);
+			} else {
+				lb3.setText(employee.getBirthDate().toString());
+			}
+			lb3.setHorizontalAlignment(SwingConstants.CENTER);
+			lb3.setFont(fontInf);
+			lb3.setPreferredSize(new Dimension(100, 48));
+			panel.add(lb3);
+
+			JLabel lb4 = new JLabel(employee.getSex().toString());
+			lb4.setHorizontalAlignment(SwingConstants.CENTER);
+			lb4.setFont(fontInf);
+			lb4.setPreferredSize(new Dimension(100, 48));
+			panel.add(lb4);
+
+			JLabel lb5 = new JLabel(employee.getAddress());
+			lb5.setHorizontalAlignment(SwingConstants.CENTER);
+			lb5.setFont(fontInf);
+			lb5.setPreferredSize(new Dimension(180, 48));
+			panel.add(lb5);
+
+			JLabel lb6 = new JLabel(employee.getNumberPhone());
+			lb6.setHorizontalAlignment(SwingConstants.CENTER);
+			lb6.setFont(fontInf);
+			lb6.setPreferredSize(new Dimension(150, 48));
+			panel.add(lb6);
+
+			JLabel lb7 = new JLabel(employee.getBaseSalary() + "");
+			lb7.setHorizontalAlignment(SwingConstants.CENTER);
+			lb7.setFont(fontInf);
+			lb7.setPreferredSize(new Dimension(125, 48));
+			panel.add(lb7);
+
+			JLabel lb8 = new JLabel(employee.getDateStart().toString());
+			lb8.setHorizontalAlignment(SwingConstants.CENTER);
+			lb8.setFont(fontInf);
+			lb8.setPreferredSize(new Dimension(125, 48));
+			panel.add(lb8);
+
+			JPanel panelTuyChinh = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 2));
+			panelTuyChinh.setOpaque(false);
+			panelTuyChinh.setPreferredSize(new Dimension(150, 48));
+			panelTuyChinh.setFont(fontLabel);
+			panelTuyChinh.setForeground(Color.WHITE);
+			panel.add(panelTuyChinh);
+
+			JButton buttonSua = new JButton(EDIT);
+			buttonSua.setActionCommand("sua\t" + employee.getId());
+			buttonSua.addActionListener(control);
+			buttonSua.setPreferredSize(new Dimension(45, 45));
+			panelTuyChinh.add(buttonSua);
+
+			JButton buttonXoa = new JButton(DELETE);
+			buttonXoa.setActionCommand("xoa\t" + employee.getId());
+			buttonXoa.addActionListener(control);
+			buttonXoa.setPreferredSize(new Dimension(45, 45));
+			panelTuyChinh.add(buttonXoa);
+		}
+	}
+
+	// Xóa nhân viên
 	public void xoaNhanVien(JButton button) {
+		// Duyệt qua các phần tử của tập hợp bằng Iterator và sử dụng remove() để xóa các phần tử
+		Iterator<Employee> iterator = listEmployees.iterator();
+		while (iterator.hasNext()) {
+		    Employee employee = iterator.next();
+		    if (employee.equalsID(button.getActionCommand().split("\t")[1])) {
+		      
+		        int dialogResult = JOptionPane.showInternalConfirmDialog(null, "Bạn có muốn xóa nhân viên có ID: " + employee.getId() + " không?", "Thông báo", JOptionPane.YES_NO_OPTION);
+		        if (dialogResult == JOptionPane.YES_OPTION) {
+		        	  iterator.remove(); // Xóa phần tử "b" khỏi tập hợp
+		        } else {
+		            return;
+		        }
+
+		    }
+		}
+
+
+		createSearchList(this.listEmployees);
+		scrollPane.setViewportView(panelShowListNV);
+	}
+
+	// Sửa nhân viên
+	public void suaNhanVien(JButton button) {
 		for (Employee employee : this.listEmployees) {
-			if (employee.equalsID(button.getActionCommand().split("	")[1])) {
-				this.listEmployees.remove(employee);
+			if (employee.equalsID(button.getActionCommand().split("\t")[1])) {
+				this.textFieldID.setText(employee.getId());
+				this.textFieldID.setEditable(false);
+				this.textFieldHoTen.setText(employee.getName());
+				if (employee.getBirthDate() != null) {
+					this.textFieldNgaySinh.setText(employee.getBirthDate().toString());
+				}
+				this.comboBoxGioiTinh.setSelectedItem(employee.getSex());
+				this.textFieldDiaChi.setText(employee.getAddress());
+				this.textFieldSDT.setText(employee.getNumberPhone());
+				this.textFieldLuongCoBan.setText("" + employee.getBaseSalary() + "");
+				this.textFieldNgayBD.setText(employee.getDateStart().toString());
+				this.buttonLuu.setActionCommand("luu sua");
+				nvDangDuocSuaTT = employee;
+			}
+		}
+	}
+
+	public void luuSua() {
+		try {
+			nvDangDuocSuaTT.setName(this.textFieldHoTen.getText());
+			nvDangDuocSuaTT.setBirthDate(new Date(this.textFieldNgaySinh.getText()));
+			nvDangDuocSuaTT.setSex((Sex) this.comboBoxGioiTinh.getSelectedItem());
+			nvDangDuocSuaTT.setAddress(this.textFieldDiaChi.getText());
+			nvDangDuocSuaTT.setNumberPhone(this.textFieldSDT.getText());
+			nvDangDuocSuaTT.setBaseSalary(Integer.parseInt(this.textFieldLuongCoBan.getText()));
+			nvDangDuocSuaTT.setDateStart(new Date(this.textFieldNgayBD.getText()));
+
+			this.textFieldID.setText("");
+			this.textFieldID.setEditable(true);
+			this.textFieldHoTen.setText("");
+			this.textFieldNgaySinh.setText("");
+			this.comboBoxGioiTinh.setSelectedItem(Sex.NAM);
+			this.textFieldDiaChi.setText("");
+			this.textFieldSDT.setText("");
+			this.textFieldLuongCoBan.setText("");
+			this.textFieldNgayBD.setText("");
+			this.buttonLuu.setActionCommand("them");
+			nvDangDuocSuaTT = null;
+
+			createSearchList(this.listEmployees);
+			scrollPane.setViewportView(panelShowListNV);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Lỗi kiểu dữ liệu đầu vào", "Lỗi", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
+	// Thêm nhân viên
+	public void themNhanVien() {
+		if (!this.textFieldID.getText().equals("") && !hasEmployee(this.textFieldID.getText())) {
+			try {
+				Employee em = new Employee();
+				em.setId(this.textFieldID.getText());
+				em.setName(this.textFieldHoTen.getText());
+				if (textFieldNgaySinh.getText().equals("")) {
+					em.setBirthDate(null);
+				} else {
+					em.setBirthDate(new Date(this.textFieldNgaySinh.getText()));
+				}
+				em.setSex((Sex) this.comboBoxGioiTinh.getSelectedItem());
+				em.setAddress(this.textFieldDiaChi.getText());
+				// kiểm tra trường sdt
+				if (this.textFieldSDT.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "Trường SDT đang bị trống", "Lỗi", JOptionPane.ERROR_MESSAGE);
+					return;
+				} else {
+					em.setNumberPhone(this.textFieldSDT.getText());
+				}
+				// Kiểm tra trường lương cơ bản
+				if (this.textFieldLuongCoBan.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "Trường tiền lương cb đang bị trống", "Lỗi",
+							JOptionPane.ERROR_MESSAGE);
+					return;
+				} else {
+					em.setBaseSalary(Integer.parseInt(this.textFieldLuongCoBan.getText()));
+				}
+				// Nếu trường này bắt đầu bó tróng thì đó là ngày hôm nay
+				if (textFieldNgayBD.getText().equals("")) {
+					LocalDate now = LocalDate.now();
+					em.setDateStart(new Date(now.getDayOfMonth(), now.getMonthValue(), now.getYear()));
+				} else {
+					em.setDateStart(new Date(this.textFieldNgayBD.getText()));
+				}
+				this.listEmployees.add(em);
+
+				this.textFieldID.setText("");
+				this.textFieldHoTen.setText("");
+				this.textFieldNgaySinh.setText("");
+				this.comboBoxGioiTinh.setSelectedItem(Sex.NAM);
+				this.textFieldDiaChi.setText("");
+				this.textFieldSDT.setText("");
+				this.textFieldLuongCoBan.setText("");
+				this.textFieldNgayBD.setText("");
+
+				createSearchList(this.listEmployees);
+				scrollPane.setViewportView(panelShowListNV);
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(null, "Lỗi kiểu dữ liệu đầu vào", "Lỗi", JOptionPane.ERROR_MESSAGE);
+				System.out.println(e);
+			}
+		} else {
+			if (!this.textFieldID.getText().equals("")) {
+				JOptionPane.showMessageDialog(null, "Trường id đang bị trống", "Lỗi", JOptionPane.ERROR_MESSAGE);
+			} else {
+				JOptionPane.showMessageDialog(null, "Nhân viên có số id trên đã tồn tại trong hệ thông", "Lỗi",
+						JOptionPane.ERROR_MESSAGE);
+			}
+		}
+	}
+
+	public boolean hasEmployee(String id) {
+		for (Employee em : this.listEmployees) {
+			if (em.getId().equals(id)) {
+				return true;
 			}
 		}
 
-		createListNV();
-		scrollPane.setViewportView(panelShowListNV);
-	}
-
-	//Sửa nhân viên
-	public void suaNhanVien() {
-//		for (Employee employee : this.listEmployees) {
-//			if (employee.equalsID(button.getActionCommand())) {
-//				this.listEmployees.remove(employee);
-//			}
-//		}
-	}
-
-	//Thêm nhân viên
-	public void themNhanVien() {
-		try {
-			this.listEmployees.add(new Employee(this.textFieldID.getText(), this.textFieldHoTen.getText(),
-					new Date(this.textFieldNgaySinh.getText()), (String) this.comboBoxGioiTinh.getSelectedItem(),
-					this.textFieldDiaChi.getText(), this.textFieldSDT.getText(),
-					Double.parseDouble(this.textFieldLuongCoBan.toString()), new Date(this.textFieldNgayBD.getText())));
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(new JFrame(), "Lỗi sai kiểu dữ liệu", "Lỗi", JOptionPane.ERROR_MESSAGE);
-		}
-
-		createListNV();
-		scrollPane.setViewportView(panelShowListNV);
+		return false;
 	}
 
 	public void dangNhap() {
@@ -532,5 +741,96 @@ public class PanelQLNV extends JPanel {
 
 	public void close() {
 		((CardLayout) this.getLayout()).show(this, "pass");
+	}
+
+	/**
+	 * find NV by TextFiled
+	 */
+	public void findNVByTextField() {
+		if (textFieldSearchID.getText().equals("") && textFieldSearchName.getText().equals("")
+				&& textFieldSearchSDT.getText().equals("")) {
+			createListNV();
+			scrollPane.setViewportView(panelShowListNV);
+		} else {
+			ArrayList<Employee> listEmployee = new ArrayList<>();
+
+			// Tìm theo id
+			if (!textFieldSearchID.getText().equals("") && textFieldSearchName.getText().equals("")
+					&& textFieldSearchSDT.getText().equals("")) {
+				for (Employee em : this.listEmployees) {
+					if (em.getId().indexOf(textFieldSearchID.getText()) >= 0) {
+						listEmployee.add(em);
+					}
+				}
+			}
+
+			// Tìm theo tên
+			if (textFieldSearchID.getText().equals("") && !textFieldSearchName.getText().equals("")
+					&& textFieldSearchSDT.getText().equals("")) {
+				for (Employee em : this.listEmployees) {
+					if (em.getName().indexOf(textFieldSearchName.getText()) >= 0) {
+						listEmployee.add(em);
+					}
+				}
+			}
+
+			// Tìm theo số điện thoại
+			if (textFieldSearchID.getText().equals("") && textFieldSearchName.getText().equals("")
+					&& !textFieldSearchSDT.getText().equals("")) {
+				for (Employee em : this.listEmployees) {
+					if (em.getNumberPhone().indexOf(textFieldSearchSDT.getText()) >= 0) {
+						listEmployee.add(em);
+					}
+				}
+			}
+
+			// Tìm theo id và tên
+			if (!textFieldSearchID.getText().equals("") && !textFieldSearchName.getText().equals("")
+					&& textFieldSearchSDT.getText().equals("")) {
+				for (Employee em : this.listEmployees) {
+					if (em.getId().indexOf(textFieldSearchID.getText()) >= 0
+							&& em.getName().indexOf(textFieldSearchName.getText()) >= 0) {
+						listEmployee.add(em);
+					}
+				}
+			}
+
+			// Tìm theo tên và số điện thoại
+			if (textFieldSearchID.getText().equals("") && !textFieldSearchName.getText().equals("")
+					&& !textFieldSearchSDT.getText().equals("")) {
+				for (Employee em : this.listEmployees) {
+					if (em.getName().indexOf(textFieldSearchName.getText()) >= 0
+							&& em.getNumberPhone().indexOf(textFieldSearchSDT.getText()) >= 0) {
+						listEmployee.add(em);
+					}
+				}
+			}
+
+			// Tìm theo id và số điện thoại
+			if (!textFieldSearchID.getText().equals("") && textFieldSearchName.getText().equals("")
+					&& !textFieldSearchSDT.getText().equals("")) {
+				for (Employee em : this.listEmployees) {
+					if (em.getId().indexOf(textFieldSearchID.getText()) >= 0
+							&& em.getNumberPhone().indexOf(textFieldSearchSDT.getText()) >= 0) {
+						listEmployee.add(em);
+					}
+				}
+			}
+
+			// Tìm theo id, tên và số điện thoại
+			if (!textFieldSearchID.getText().equals("") && !textFieldSearchName.getText().equals("")
+					&& !textFieldSearchSDT.getText().equals("")) {
+				for (Employee em : this.listEmployees) {
+					if (em.getId().indexOf(textFieldSearchID.getText()) >= 0
+							&& em.getName().indexOf(textFieldSearchName.getText()) >= 0
+							&& em.getNumberPhone().indexOf(textFieldSearchSDT.getText()) >= 0) {
+						listEmployee.add(em);
+					}
+				}
+			}
+
+			createSearchList(listEmployee);
+			scrollPane.setViewportView(panelShowListNV);
+		}
 	}
 }

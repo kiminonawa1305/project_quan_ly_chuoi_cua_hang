@@ -5,12 +5,12 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 
-import view.DesignViewOutlets;
+import view.outlet.GUIOutlets;
 
 public class ControlViewOutlets implements ActionListener {
-	private DesignViewOutlets viewOutlets;
+	private GUIOutlets viewOutlets;
 
-	public ControlViewOutlets(DesignViewOutlets viewOutlets) {
+	public ControlViewOutlets(GUIOutlets viewOutlets) {
 		this.viewOutlets = viewOutlets;
 	}
 
@@ -23,7 +23,7 @@ public class ControlViewOutlets implements ActionListener {
 		}
 		
 		if (button.equals(viewOutlets.getButtonHoaDon())) {
-			viewOutlets.upDateHoaDon();
+			viewOutlets.updateHoaDon();
 			viewOutlets.showHoaDon();
 		}
 		
@@ -33,6 +33,7 @@ public class ControlViewOutlets implements ActionListener {
 		
 		if (button.equals(viewOutlets.getButtonDoanhThu())) {
 			viewOutlets.showDoanhThu();
+			viewOutlets.updateDoanThu();
 		}
 	}
 

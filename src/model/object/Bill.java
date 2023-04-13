@@ -1,4 +1,4 @@
-package model.system;
+package model.object;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -17,7 +17,6 @@ public class Bill {
 
 	public Bill(HashMap<Beverage, Integer> listBeverage, HashMap<Food, Integer> listFood) {
 		super();
-		this.id = id;
 		this.listBeverage = listBeverage;
 		this.listFood = listFood;
 		totalBill = this.getTotalBill();

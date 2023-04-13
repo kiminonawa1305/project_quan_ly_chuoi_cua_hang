@@ -1,12 +1,16 @@
 package model.pay;
 
-import model.system.Bill;
+import javax.swing.JOptionPane;
+
+import model.object.Bill;
 
 public class Transfer implements PayOption {
 
 	@Override
-	public boolean getPay(Bill bill, double thue, double moneyReceived) {
-		System.out.println("Bạn đã thanh toán bằng cách chuyển khoản");
-		return bill.getPay(thue) <= moneyReceived;
+	public boolean getPay(Bill bill, double thue) {
+		JOptionPane.showMessageDialog(null,
+				"Đã thanh toán thành công bằng hình thức chuyển khoản",
+				"Thành công", JOptionPane.INFORMATION_MESSAGE);
+		return true;
 	}
 }

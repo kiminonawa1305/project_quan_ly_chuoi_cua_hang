@@ -4,10 +4,21 @@ import java.util.Objects;
 
 import model.system.Size;
 
-public abstract class Beverages implements Beverage {
-	protected String urlImage, name;
-	protected Size size = Size.MEDIUM;
-	protected double cost;
+public class Beverages implements Beverage {
+	private String urlImage, name;
+	private Size size = Size.MEDIUM;
+	private double cost;
+	
+	public Beverages(String url, String name, double cost) {
+		super();
+		this.urlImage = url;
+		this.name = name;
+		this.cost = cost;
+	}
+	
+	public Beverages(Size size) {
+		this.size = size;
+	}
 
 	public String getUrlImage() {
 		return urlImage;
@@ -43,7 +54,7 @@ public abstract class Beverages implements Beverage {
 
 	@Override
 	public String toString() {
-		return this.note() + " giá là " + this.cost();
+		return this.note();
 	}
 
 	@Override
@@ -61,5 +72,19 @@ public abstract class Beverages implements Beverage {
 		return this.name.equals(that.name) && this.size.equals(that.size) && this.cost == that.cost;
 	}
 	
-	public abstract Beverage clone();
+
+	@Override
+	public double cost() {
+		return cost * size.getPercent();
+	}
+
+	@Override
+	public String note() {
+		return name + " size " + size;
+	}
+
+	@Override
+	public Beverage clone(){
+		return new Beverages(this.urlImage, this.name, this.cost);
+	}
 }

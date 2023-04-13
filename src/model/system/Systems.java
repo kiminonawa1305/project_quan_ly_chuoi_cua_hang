@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.TreeMap;
 
 import model.beverage.*;
 import model.food.*;
@@ -53,19 +54,58 @@ public class Systems extends Observable implements Observer {
 		return listToppingBeverage;
 	}
 
-	/**
-	 * 
-	 * @param id
-	 */
-	public String getTurnoverOfOutlets(String id) {
-		this.getTotalTurnover();
+	
+//	public String getTurnoverOfOutlets(String id, int month, int year) {
+//		this.getTotalTurnoverByMonth(month, year);
+//
+//		return "Thu nhap " + id + " " + listTurnover.get("Thu nhap " + id);
+//	}
+//	
+//	public String getTurnoverByOutlets(String id, int year) {
+//		this.getTotalTurnoverByYear(year);
+//
+//		return "Thu nhap " + id + " " + listTurnover.get("Thu nhap " + id);
+//	}
+	
+	public void getTotalTurnoverByWeek(int week, int month, int year) {
+		notify = new Object[5];
+		notify[0] = "Thu nhap";
+		notify[1] = "tuan";
+		notify[2] = week;
+		notify[3] = month;
+		notify[5] = year;
 
-		return "Thu nhap " + id + " " + listTurnover.get("Thu nhap " + id);
+		this.setChanged();
+		this.notifyObservers(notify);
+	}
+	
+	public void getTotalTurnoverByMonth(int month, int year) {
+		notify = new Object[4];
+		notify[0] = "Thu nhap";
+		notify[1] = "thang";
+		notify[2] = month;
+		notify[3] = year;
+
+		this.setChanged();
+		this.notifyObservers(notify);
 	}
 
-	public void getTotalTurnover() {
-		notify = new Object[1];
+	public void getTotalTurnoverByQuarter(int quarter, int year) {
+		notify = new Object[4];
 		notify[0] = "Thu nhap";
+		notify[1] = "quy";
+		notify[2] = quarter;
+		notify[3] = year;
+
+		this.setChanged();
+		this.notifyObservers(notify);
+	}
+	
+	public void getTotalTurnoverByYear(int year) {
+		notify = new Object[3];
+		notify[0] = "Thu nhap";
+		notify[1] = "nam";
+		notify[2] = year;
 
 		this.setChanged();
 		this.notifyObservers(notify);
@@ -129,7 +169,7 @@ public class Systems extends Observable implements Observer {
 		outlets.deleteObserver(this);
 		outlets.setListBeverage(new ArrayList<>());
 		outlets.setListFood(new ArrayList<>());
-		outlets.setListBill(new ArrayList<>());
+		outlets.setListBill(new TreeMap<>());
 		outlets.setListToppingBeverage(new ArrayList<>());
 		outlets.setListToppingFood(new ArrayList<>());
 	}

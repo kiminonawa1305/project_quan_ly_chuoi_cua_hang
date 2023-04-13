@@ -1,14 +1,11 @@
 package control;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 
-import view.PanelQLNV;
+import view.outlet.PanelQLNV;
 
 public class ControlPanelQLNV implements ActionListener {
 	private PanelQLNV panelQLNV;
@@ -22,21 +19,29 @@ public class ControlPanelQLNV implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		JButton button = (JButton) e.getSource();
 
-		if(panelQLNV.getButtonEyes().equals(button)) {
+		if (panelQLNV.getButtonEyes().equals(button)) {
 			panelQLNV.actionButtonEye(button);
 		}
-		
-		if(panelQLNV.getButtonDangNhap().equals(button)) {
+
+		if (panelQLNV.getButtonDangNhap().equals(button)) {
 			panelQLNV.dangNhap();
 		}
+
+		if (button.getActionCommand().split("\t")[0].equals("sua")) {
+			panelQLNV.suaNhanVien(button);
+		}
 		
-//		if(panelQLNV.getButtonEyes().equals(button)) {
-//			panelQLNV.actionButtonEye(button);
-//		}
-//		
-//		if(panelQLNV.getButtonEyes().equals(button)) {
-//			panelQLNV.actionButtonEye(button);
-//		}
+		if (button.getActionCommand().split("\t")[0].equals("xoa")) {
+			panelQLNV.xoaNhanVien(button);
+		}
+
+		if (panelQLNV.getButtonLuu().equals(button)) {
+			if (button.getActionCommand().equals("luu sua")) {
+				panelQLNV.luuSua();
+			}else {
+				panelQLNV.themNhanVien();
+			}
+		}
 	}
 
 }

@@ -1,4 +1,4 @@
-package view;
+package view.outlet;
 
 import java.awt.*;
 import java.awt.geom.*;
