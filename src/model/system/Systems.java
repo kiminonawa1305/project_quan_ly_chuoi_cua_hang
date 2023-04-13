@@ -54,6 +54,7 @@ public class Systems extends Observable implements Observer {
 		return listToppingBeverage;
 	}
 
+<<<<<<< HEAD
 	
 //	public String getTurnoverOfOutlets(String id, int month, int year) {
 //		this.getTotalTurnoverByMonth(month, year);
@@ -74,6 +75,14 @@ public class Systems extends Observable implements Observer {
 		notify[2] = week;
 		notify[3] = month;
 		notify[5] = year;
+=======
+	/**
+	 * 
+	 * @param id
+	 */
+	public String getTurnoverOfOutlets(String id, int month, int year) {
+		this.getTotalTurnoverByMonth(month, year);
+>>>>>>> 5552d5310d7269bf1216d8992da37cda77cffd95
 
 		this.setChanged();
 		this.notifyObservers(notify);
@@ -90,19 +99,38 @@ public class Systems extends Observable implements Observer {
 		this.notifyObservers(notify);
 	}
 
+<<<<<<< HEAD
 	public void getTotalTurnoverByQuarter(int quarter, int year) {
 		notify = new Object[4];
 		notify[0] = "Thu nhap";
 		notify[1] = "quy";
 		notify[2] = quarter;
 		notify[3] = year;
+=======
+	public void getTotalTurnoverByMonth(int month, int year) {
+		notify = new Object[1];
+		notify[0] = "Thu nhap";
+		notify[1] = "thang";
+		notify[2] = month + "/" + year;
+>>>>>>> 5552d5310d7269bf1216d8992da37cda77cffd95
 
 		this.setChanged();
 		this.notifyObservers(notify);
 	}
 	
+<<<<<<< HEAD
 	public void getTotalTurnoverByYear(int year) {
 		notify = new Object[3];
+=======
+	public String getTurnoverOfOutlets(String id, int year) {
+		this.getTotalTurnoverByYear(year);
+
+		return "Thu nhap " + id + " " + listTurnover.get("Thu nhap " + id);
+	}
+
+	public void getTotalTurnoverByYear(int year) {
+		notify = new Object[1];
+>>>>>>> 5552d5310d7269bf1216d8992da37cda77cffd95
 		notify[0] = "Thu nhap";
 		notify[1] = "nam";
 		notify[2] = year;

@@ -2,7 +2,11 @@ package model.pay;
 
 import javax.swing.JOptionPane;
 
+<<<<<<< HEAD
 import model.object.Bill;
+=======
+import model.system.Bill;
+>>>>>>> 5552d5310d7269bf1216d8992da37cda77cffd95
 
 public class Transfer implements PayOption {
 

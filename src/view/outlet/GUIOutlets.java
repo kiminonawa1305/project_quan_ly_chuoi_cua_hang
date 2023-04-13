@@ -26,7 +26,15 @@ import model.food.OtherToppingFood;
 import model.system.Date;
 import model.system.Employee;
 import model.system.Outlets;
+<<<<<<< HEAD:src/view/outlet/GUIOutlets.java
 import model.system.Sex;
+=======
+import javax.swing.JLabel;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
+import javax.swing.SwingConstants;
+>>>>>>> 5552d5310d7269bf1216d8992da37cda77cffd95:src/view/DesignViewOutlets.java
 
 public class GUIOutlets extends JFrame {
 	private Outlets outlets;
@@ -38,6 +46,10 @@ public class GUIOutlets extends JFrame {
 	private ControlViewOutlets control;
 	private PanelHoaDon panelHoaDon;
 	private PanelDoanhThu panelDoanhThu;
+<<<<<<< HEAD:src/view/outlet/GUIOutlets.java
+=======
+	
+>>>>>>> 5552d5310d7269bf1216d8992da37cda77cffd95:src/view/DesignViewOutlets.java
 
 	/**
 	 * Create the frame.
@@ -158,8 +170,13 @@ public class GUIOutlets extends JFrame {
 		// Doanh thu
 		panelDoanhThu = new PanelDoanhThu(outlets);
 		panelCenter.add("doanh_thu", panelDoanhThu);
+<<<<<<< HEAD:src/view/outlet/GUIOutlets.java
 
 		// Quan ly nhan vien
+=======
+		
+		//Quan ly nhan vien
+>>>>>>> 5552d5310d7269bf1216d8992da37cda77cffd95:src/view/DesignViewOutlets.java
 		panelQLNV = new PanelQLNV(outlets.getEmployees(), outlets.getPass());
 		panelCenter.add("qlnv", panelQLNV);
 	}
@@ -208,11 +225,19 @@ public class GUIOutlets extends JFrame {
 	public void updateHoaDon() {
 		panelHoaDon.upDateListSPDM();
 	}
+<<<<<<< HEAD:src/view/outlet/GUIOutlets.java
 
 	public void updateDoanThu() {
 		panelDoanhThu.update();
 	}
 
+=======
+	
+	public void updateDoanThu() {
+		panelDoanhThu.update();
+	}
+	
+>>>>>>> 5552d5310d7269bf1216d8992da37cda77cffd95:src/view/DesignViewOutlets.java
 	/**
 	 * Launch the application.
 	 */
@@ -294,14 +319,23 @@ public class GUIOutlets extends JFrame {
 		outlets.setEmployees(emplyees);
 		outlets.setListToppingFood(listToppingFood);
 		outlets.setListToppingBeverage(listToppingBeverage);
+<<<<<<< HEAD:src/view/outlet/GUIOutlets.java
 
+=======
+		
+>>>>>>> 5552d5310d7269bf1216d8992da37cda77cffd95:src/view/DesignViewOutlets.java
 		Outlets outlets2 = new Outlets("b", "b", "abcd", "2");
 		outlets2.setListBeverage(listBeverages);
 		outlets2.setListFood(listFoods);
 		outlets2.setEmployees(emplyees);
 		outlets2.setListToppingFood(listToppingFood);
 		outlets2.setListToppingBeverage(listToppingBeverage);
+<<<<<<< HEAD:src/view/outlet/GUIOutlets.java
 
 		GUIOutlets frame = new GUIOutlets(outlets);
+=======
+		
+		DesignViewOutlets frame = new DesignViewOutlets(outlets);
+>>>>>>> 5552d5310d7269bf1216d8992da37cda77cffd95:src/view/DesignViewOutlets.java
 	}
 }

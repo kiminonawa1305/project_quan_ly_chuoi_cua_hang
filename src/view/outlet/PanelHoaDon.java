@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 import java.util.concurrent.Flow;
 
 import javax.swing.ButtonGroup;
+import javax.swing.ButtonModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -41,6 +42,10 @@ public class PanelHoaDon extends JPanel {
 	private ControlPanelHoaDon control;
 	private ButtonGroup groupOptionTT;
 	private JButton buttonThanhToan;
+<<<<<<< HEAD:src/view/outlet/PanelHoaDon.java
+=======
+	private JTable table;
+>>>>>>> 5552d5310d7269bf1216d8992da37cda77cffd95:src/view/PanelHoaDon.java
 
 	/**
 	 * Create the panel.
@@ -348,6 +353,10 @@ public class PanelHoaDon extends JPanel {
 			bill = new Bill();
 			panelMenuSanPham.setBill(bill);
 			labelTTHD.setText("<html>Thông tin hóa đơn<br> Mã hóa đơn: " + bill.getId() + "</html>");
+<<<<<<< HEAD:src/view/outlet/PanelHoaDon.java
+=======
+			System.out.println("Doanh thu hien tai la: " + outlets.getTotalTurnoverByMonth(4, 2023));
+>>>>>>> 5552d5310d7269bf1216d8992da37cda77cffd95:src/view/PanelHoaDon.java
 			upDateListSPDM();
 		}
 	}

@@ -24,7 +24,14 @@ import model.beverage.Beverages;
 import model.food.Food;
 import model.food.FoodDecorator;
 import model.food.Foods;
+<<<<<<< HEAD:src/view/outlet/PanelMenuSanPham.java
 import model.object.Bill;
+=======
+import model.food.OtherFood;
+import model.food.OtherToppingFood;
+import model.system.Bill;
+import model.system.NumericInputOnlyDocument;
+>>>>>>> 5552d5310d7269bf1216d8992da37cda77cffd95:src/view/PanelMenuSanPham.java
 import model.system.Outlets;
 import model.system.Size;
 
@@ -50,7 +57,10 @@ public class PanelMenuSanPham extends JPanel {
 	private Bill bill;
 
 	public PanelMenuSanPham(Outlets outlets) {
+<<<<<<< HEAD:src/view/outlet/PanelMenuSanPham.java
 		this.outlets = outlets;
+=======
+>>>>>>> 5552d5310d7269bf1216d8992da37cda77cffd95:src/view/PanelMenuSanPham.java
 		this.listFoods = outlets.getListFood();
 		this.listBeverages = outlets.getListBeverage();
 		this.listToppingBeverage = outlets.getListToppingBeverage();

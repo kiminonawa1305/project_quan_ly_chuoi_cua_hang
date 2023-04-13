@@ -1,10 +1,15 @@
 package model.system;
 
+<<<<<<< HEAD
 import java.awt.Dimension;
 import java.time.LocalDate;
+=======
+import java.time.LocalDate;
+import java.time.temporal.WeekFields;
+>>>>>>> 5552d5310d7269bf1216d8992da37cda77cffd95
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -18,8 +23,11 @@ import model.beverage.Beverage;
 import model.beverage.BeverageDecorator;
 import model.food.Food;
 import model.food.FoodDecorator;
+<<<<<<< HEAD
 import model.object.Bill;
 import model.object.MapSortByValue;
+=======
+>>>>>>> 5552d5310d7269bf1216d8992da37cda77cffd95
 import model.pay.PayOption;
 
 @SuppressWarnings("deprecation")
@@ -53,6 +61,14 @@ public class Outlets extends Observable implements Observer {
 		listToppingBeverage = new ArrayList<>();
 		topFood = new HashMap<>();
 		topBeverage = new HashMap<>();
+	}
+
+	public String getID() {
+		return ID;
+	}
+
+	public String getAddress() {
+		return address;
 	}
 
 	public String getID() {
@@ -136,6 +152,7 @@ public class Outlets extends Observable implements Observer {
 			LocalDate now = LocalDate.now();
 			if (listBill.containsKey(now)) {
 				listBill.get(now).add(bill);
+<<<<<<< HEAD
 				Map<Beverage, Integer> topBeverageNow = topBeverage.get(now);
 				Map<Beverage, Integer> listBeverageOfBill = bill.getListBeverage();
 				a: for (Entry<Beverage, Integer> beverage : listBeverageOfBill.entrySet()) {
@@ -158,10 +175,13 @@ public class Outlets extends Observable implements Observer {
 					}
 				}
 				topFood.put(now, MapSortByValue.sortByValue(listFoodNow));
+=======
+>>>>>>> 5552d5310d7269bf1216d8992da37cda77cffd95
 			} else {
 				List<Bill> list = new ArrayList<>();
 				list.add(bill);
 				listBill.put(now, list);
+<<<<<<< HEAD
 
 				Map<Beverage, Integer> topBeverageNow = new HashMap<Beverage, Integer>();
 				Map<Beverage, Integer> listBeverageOfBill = bill.getListBeverage();
@@ -200,6 +220,8 @@ public class Outlets extends Observable implements Observer {
 				for (Entry<Food, Integer> fo : food.getValue().entrySet()) {
 					System.out.println("\t+" + fo.getKey() + " tổng số lương: " + fo.getValue());
 				}
+=======
+>>>>>>> 5552d5310d7269bf1216d8992da37cda77cffd95
 			}
 			return true;
 		}
@@ -312,6 +334,7 @@ public class Outlets extends Observable implements Observer {
 		return re;
 	}
 
+<<<<<<< HEAD
 	public double getTotalTurnoverByQuarter(int quarter, int year) {
 		double re = 0;
 		for (LocalDate date : listBill.keySet()) {
@@ -326,6 +349,8 @@ public class Outlets extends Observable implements Observer {
 		return re;
 	}
 
+=======
+>>>>>>> 5552d5310d7269bf1216d8992da37cda77cffd95
 	public double getTotalTurnoverByYear(int year) {
 		double re = 0;
 		for (LocalDate date : listBill.keySet()) {
@@ -344,6 +369,7 @@ public class Outlets extends Observable implements Observer {
 			double re = 0;
 			notify = new Object[5];
 			System.arraycopy(src, 0, notify, 0, 3);
+<<<<<<< HEAD
 			switch (((String) src[1])) {
 			case "tuan": {
 				break;
@@ -362,6 +388,14 @@ public class Outlets extends Observable implements Observer {
 			}
 			}
 
+=======
+			if (((String) src[1]).equals("nam")) {
+				re = this.getTotalTurnoverByYear(Integer.parseInt((String) src[2]));
+			} else {
+				re = this.getTotalTurnoverByMonth(Integer.parseInt(((String) src[2]).split("/")[0]),
+						Integer.parseInt(((String) src[2]).split("/")[1]));
+			}
+>>>>>>> 5552d5310d7269bf1216d8992da37cda77cffd95
 			notify[3] = ID;
 			notify[4] = re;
 			this.setChanged();
